@@ -1,5 +1,6 @@
 <template>
   <div id="home">
+
     <div ref="welcomeDiv" id="welcome-div" class="start">
       <h1 id="welcome-text">WELCOME</h1>
 
@@ -15,6 +16,7 @@
         </div>
 
       </div>
+
     </div>
 
     <div ref='aboutMe' id="about-me" class="start">
@@ -30,10 +32,37 @@
       <h2 ref="skillsTitle" class="start">Skills</h2>
 
       <div ref="backendSlide" class="start skill-div">
-        <div class="skill-card">
-          <img />
-          <p>Backend</p>
+        
+        <div class="skill-div-row-content">
+
+          <div class="skill-card">
+            <img id="backend-card-img" src="@/assets/backendIcons.png" />
+            <p>Backend</p>
+          </div>
+
+          <div class="skills-big-text">
+            <p>
+              Experience with Python, Node.js, MongoDB, and Express.js
+            </p>
+          </div>
+
         </div>
+
+        <div class="skill-div-row-content">
+
+          <div class="skills-small-text">
+            <p>
+              Majority of my experience that came from building websites came from utilizing the MEVN Stack. This consist of using Node.js, Express.js, Vue.js, and MongoDB.
+            </p>
+          </div>
+
+          <div class="mevn-card">
+            <img id="mevn-img" src="@/assets/mevnStack.png" />
+            <p>MEVN</p>
+          </div>
+
+        </div>
+
       </div>
       
     </div>
@@ -45,30 +74,44 @@
 import { onMounted, ref } from "vue";
 
 export default {
-  setup() {
 
-    let seenDivs = [];
+  setup() {
 
     const welcomeDiv = ref(null);
     const aboutMe = ref(null);
     const skillsTitle = ref(null);
     const backendSlide = ref(null);
 
-    const divs = [welcomeDiv, aboutMe, skillsTitle, backendSlide];
+    let seenDivs = [];
+
+    let unSeenDivs = [welcomeDiv, aboutMe, skillsTitle, backendSlide];
 
     function animateDiv(div) {
       div.style.transform = 'translateY(0px)';
       div.style.opacity = 1;
     }
 
-    function checkBound (refElement) {
+    function checkBound() {
 
-      let bound = refElement.value.getBoundingClientRect();
+      if (unSeenDivs.length > 0) {
 
-      if (bound.y <= window.innerHeight - 40) {
+        unSeenDivs.forEach(div => {
 
-        animateDiv(refElement.value)
-        seenDivs.push(refElement);
+          if (seenDivs.includes(div) == false) {
+
+            let bound = div.value.getBoundingClientRect();
+
+            if (bound.y <= window.innerHeight - 40) {
+
+              animateDiv(div.value);
+
+              seenDivs.push(div);
+
+            }
+
+          }
+
+        })
 
       }
 
@@ -76,25 +119,13 @@ export default {
 
     onMounted(() => {
 
-      divs.forEach(div => {
-
-        checkBound(div);
-
-      })
+      checkBound();
 
     })
 
     window.addEventListener("scroll", function() {
 
-      divs.forEach(div => {
-
-        if (seenDivs.includes(div) == false) {
-
-          checkBound(div);
-
-        }
-
-      })
+      checkBound();
 
     })
 
@@ -241,7 +272,11 @@ export default {
 .skill-div {
   background: rgba(16, 12, 125, 0.2);
   padding: 40px;
-  width: 1240px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
 }
 
 .skill-card {
@@ -264,5 +299,85 @@ export default {
   line-height: 72px;
   color: #FFFFFF;
   text-shadow: -2px 2px 0px #000000;
+  margin: 0;
 }
+
+#backend-card-img {
+  margin: 0;
+  height: 90px;
+}
+
+.skills-big-text {
+  margin: 0;
+  width: 560px;
+  height: 300px;
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.skills-big-text p {
+  margin: 0;
+}
+
+.skill-div-row-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.skills-small-text {
+
+  margin: 0;
+  width: 560px;
+  height: 300px;
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+
+}
+
+.skills-small-text p {
+  margin: 0;
+}
+
+.mevn-card {
+  margin: 0;
+  width: 560px;
+  height: 300px;
+  background: #61309F;
+  box-shadow: -2px 2px 4px rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.mevn-card p {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 72px;
+  line-height: 72px;
+  color: #FFFFFF;
+  text-shadow: -2px 2px 0px #000000;
+}
+
+#mevn-img {
+  margin: 0;
+  height: 250px;
+}
+
 </style>
